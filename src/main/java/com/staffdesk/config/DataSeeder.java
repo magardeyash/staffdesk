@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Automatically seeds initial demo employee records on startup if the database is empty.
- * Implemented as a separate @Component so it won't interfere with @WebMvcTest slices.
- */
 @Component
 public class DataSeeder implements CommandLineRunner {
 

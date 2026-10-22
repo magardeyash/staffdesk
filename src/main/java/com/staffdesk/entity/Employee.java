@@ -12,9 +12,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-/**
- * Employee JPA Entity representing the 'employees' table in MySQL.
- */
 @Entity
 @Table(name = "employees")
 public class Employee {
@@ -42,11 +39,9 @@ public class Employee {
     @Column(nullable = false)
     private Double salary;
 
-    // Default no-argument constructor (required by JPA / Hibernate)
     public Employee() {
     }
 
-    // All-arguments constructor
     public Employee(Long id, String name, String email, String department, Double salary) {
         this.id = id;
         this.name = name;
@@ -55,7 +50,6 @@ public class Employee {
         this.salary = salary;
     }
 
-    // Convenience constructor without ID (useful for creating new employees)
     public Employee(String name, String email, String department, Double salary) {
         this.name = name;
         this.email = email;
@@ -63,7 +57,6 @@ public class Employee {
         this.salary = salary;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

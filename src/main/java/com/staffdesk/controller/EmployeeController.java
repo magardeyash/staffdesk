@@ -18,24 +18,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-/**
- * Controller handling web requests for Employee CRUD operations.
- * Implements the Post-Redirect-Get (PRG) pattern for form submissions.
- */
 @Controller
 @RequestMapping({"/", "/employees"})
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    // Constructor Injection
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    /**
-     * List all employees, or filter by search keyword.
-     */
     @GetMapping({"", "/"})
     public String listEmployees(
             @RequestParam(name = "keyword", required = false) String keyword,
@@ -46,9 +38,6 @@ public class EmployeeController {
         return "employees";
     }
 
-    /**
-     * Show the form to create a new employee.
-     */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("employee", new Employee());
@@ -56,9 +45,6 @@ public class EmployeeController {
         return "employee-form";
     }
 
-    /**
-     * Process creation or update of an employee with validation.
-     */
     @PostMapping("/save")
     public String saveEmployee(
             @Valid @ModelAttribute("employee") Employee employee,
@@ -66,14 +52,12 @@ public class EmployeeController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
-        // Check for unique email constraint before saving
         if (employee.getEmail() != null && !employee.getEmail().isBlank()) {
             if (!employeeService.isEmailUnique(employee.getEmail(), employee.getId())) {
                 bindingResult.rejectValue("email", "duplicate.email", "This email address is already registered.");
             }
         }
 
-        // If validation errors exist, return back to the form with error feedback
         if (bindingResult.hasErrors()) {
             model.addAttribute("pageTitle", employee.getId() == null ? "Add New Employee" : "Edit Employee");
             return "employee-form";
@@ -88,9 +72,6 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
-    /**
-     * Show the form pre-filled with existing employee details for editing.
-     */
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -99,9 +80,6 @@ public class EmployeeController {
         return "employee-form";
     }
 
-    /**
-     * Delete an employee by ID.
-     */
     @GetMapping("/{id}/delete")
     public String deleteEmployee(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         employeeService.deleteEmployeeById(id);
@@ -109,10 +87,6 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
-    /**
-     * Gracefully handle missing Employee IDs by redirecting with an error message
-     * instead of throwing a 500 error or stack trace to the user.
-     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public String handleResourceNotFound(ResourceNotFoundException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
