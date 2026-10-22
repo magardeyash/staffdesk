@@ -88,45 +88,6 @@ CREATE TABLE employees (
 
 ---
 
-## Setup and Running
-
-**Step 1. Create the database**
-
-```sql
-CREATE DATABASE IF NOT EXISTS staffdesk_db
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-```
-
-**Step 2. Configure credentials**
-
-Edit `src/main/resources/application.properties` and set your MySQL credentials:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/staffdesk_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-spring.datasource.username=root
-spring.datasource.password=your_password
-```
-
-**Step 3. Run the application**
-
-Using Maven:
-
-```bash
-mvn spring-boot:run
-```
-
-Or build and run the executable JAR:
-
-```bash
-mvn clean package
-java -jar target/staffdesk-0.0.1-SNAPSHOT.jar
-```
-
-The application starts on `http://localhost:8080`.
-
----
-
 ## Application Routes
 
 | Method | Route | Description |
